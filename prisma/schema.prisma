@@ -12,6 +12,16 @@ datasource db {
 }
 
 model Budget {
-  id      Int     @id @default(autoincrement())
-  name    String  @unique
+  id        Int     @id @default(autoincrement())
+  name      String  @unique
+  expenses  Expense[]
+}
+
+model Expense {
+  id        Int   @id @default(autoincrement())
+  name      String
+  type      String
+  amount    Float
+  budget    Budget @relation(fields: [budgetId], references: [id])
+  budgetId  Int
 }

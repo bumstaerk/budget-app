@@ -5,7 +5,7 @@ import type {
   LoaderFunctionArgs,
   MetaFunction,
 } from "@remix-run/cloudflare";
-import { useLoaderData } from "@remix-run/react";
+import { useLoaderData, Link } from "@remix-run/react";
 import { Form } from "react-router-dom";
 
 export const meta: MetaFunction = () => {
@@ -36,7 +36,7 @@ export async function action({ request, context }: ActionFunction) {
 }
 export async function loader({ context }: LoaderFunctionArgs) {
   const adapter = new PrismaD1(context.cloudflare.env.DB);
-  const prisma = new PrismaClient({ adapter });
+  const prisma = new PrismaClient({ adapter })
   return await prisma.budget.findMany();
 }
 export default function Index() {
@@ -50,7 +50,7 @@ export default function Index() {
       </Form>
       {data.map((budget) => (
         <div key={`budget-${budget.id}`}>
-          {budget.name}
+          <Link to={`/budget/${budget.id}`}>{budget.name}</Link>
           <Form method="DELETE">
             <input type="hidden" name="id" value={budget.id} />
             <button type="submit">DELETE</button>
